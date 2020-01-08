@@ -6,11 +6,14 @@ module Fastlane
 
     class AndroidGetVersionNameAction < Action
       def self.run(params)
+
+        UI.message "Load gradle file: #{params[:gradle_file]}"
+
         gradle_file_path = Helper::VersioningAndroidHelper.get_gradle_file_path(params[:gradle_file])
-        version_name = Helper::VersioningAndroidHelper.read_key_from_gradle_file(gradle_file_path, "versionName")
+        version_name = Helper::VersioningAndroidHelper.read_key_from_gradle_file(gradle_file_path, "version")
 
         if version_name == false
-          UI.user_error!("Unable to find the versionName in build.gradle file at #{gradle_file_path}.")
+          UI.user_error!("Unable to find the version in gradle.properties file at #{gradle_file_path}.")
         end
 
         UI.success("👍  Current Android Version Name is: #{version_name}")
@@ -31,12 +34,12 @@ module Fastlane
         [
           FastlaneCore::ConfigItem.new(key: :gradle_file,
                                   env_name: "FL_ANDROID_GET_VERSION_NAME_GRADLE_FILE",
-                               description: "(optional) Specify the path to your app build.gradle if it isn't in the default location",
+                               description: "(optional) Specify the path to your app gradle.properties if it isn't in the default location",
                                   optional: true,
                                       type: String,
-                             default_value: "app/build.gradle",
+                             default_value: "app/gradle.properties",
                               verify_block: proc do |value|
-                                UI.user_error!("Could not find app build.gradle file") unless File.exist?(value) || Helper.test?
+                                UI.user_error!("Could not find app gradle.properties file") unless File.exist?(value) || Helper.test?
                               end)
         ]
       end
@@ -61,8 +64,8 @@ module Fastlane
 
       def self.example_code
         [
-          'version_name = android_get_version_name # build.gradle is in the default location',
-          'version_name = android_get_version_name(gradle_file: "/path/to/build.gradle")'
+          'version_name = android_get_version_name # gradle.properties is in the default location',
+          'version_name = android_get_version_name(gradle_file: "/path/to/gradle.properties")'
         ]
       end
     end
