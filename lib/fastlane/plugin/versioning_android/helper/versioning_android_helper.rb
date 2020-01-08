@@ -54,7 +54,9 @@ module Fastlane
         begin
           file = File.new(gradle_file, "r")
           while (line = file.gets)
+            UI.message "check line #{line}"
             next unless line.include? key
+            UI.message "check line was the searched value"
             components = line.strip.split('=')
             value = components[components.length - 1].tr("\"", "")
             break
