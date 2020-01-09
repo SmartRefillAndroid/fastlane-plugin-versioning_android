@@ -32,7 +32,11 @@ module Fastlane
 
           major = current_version_parts[0].to_i
           minor = current_version_parts[1].to_i
-          patch = current_version_parts[2].to_i
+          if current_version_parts[2] != nil
+            patch = current_version_parts[2].to_i
+          else
+            UI.error("An exception occured while reading gradle file: #{err}")
+            break
 
           if bump_type == "major"
             new_version_name = "#{major + 1}.0.0"
