@@ -36,7 +36,7 @@ module Fastlane
             patch = current_version_parts[2].to_i
           else
             UI.error("An exception occured while reading gradle file: #{err}")
-            break
+            return current_version_name.to_s
           end
 
           if bump_type == "major"
