@@ -37,6 +37,7 @@ module Fastlane
           else
             UI.error("An exception occured while reading gradle file: #{err}")
             break
+          end
 
           if bump_type == "major"
             new_version_name = "#{major + 1}.0.0"
