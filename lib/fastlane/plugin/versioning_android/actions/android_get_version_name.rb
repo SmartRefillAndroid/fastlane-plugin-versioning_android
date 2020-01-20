@@ -7,8 +7,6 @@ module Fastlane
     class AndroidGetVersionNameAction < Action
       def self.run(params)
 
-        UI.message "Load gradle file: #{params[:gradle_file]}"
-
         gradle_file_path = Helper::VersioningAndroidHelper.get_gradle_file_path(params[:gradle_file])
         version_name = Helper::VersioningAndroidHelper.read_key_from_gradle_file(gradle_file_path, "version")
 
